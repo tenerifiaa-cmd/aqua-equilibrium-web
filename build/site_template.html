@@ -1,0 +1,1130 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aqua Equilibrium — technologies Ring Orion</title>
+<meta name="description" content="Ring Orion restaure l'équilibre rédox et ionique de l'eau en circulation. Corrosion, calcaire et biofilm régressent — sans chimie, sans énergie, sans entretien.">
+<style>
+{{FONTS_CSS}}
+</style>
+<style>
+:root{
+  --paper:#FBFBF9;
+  --paper-alt:#F1F3F1;
+  --white:#FFFFFF;
+  --ink:#0B252B;
+  --ink-70:#3D4F51;
+  --ink-50:#5C6B6C;
+  --ink-35:#8A9795;
+  --line:rgba(11,37,43,0.10);
+  --line-strong:rgba(11,37,43,0.22);
+  --teal:#157F72;
+  --teal-bright:#4FB3A5;
+  --teal-pale:#7FD1C4;
+  --oxide:#A85A32;
+  --oxide-pale:#D89A6E;
+  --dark:#0B252B;
+  --darker:#08191D;
+  --on-dark:#F4F6F5;
+  --on-dark-70:#B8C6C4;
+
+  --serif:'Newsreader','Iowan Old Style','Palatino Linotype',Georgia,serif;
+  --sans:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font:400 16.5px/1.6 var(--sans);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+img{max-width:100%;display:block}
+a{color:var(--teal);text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--teal);outline-offset:2px;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:0 44px}
+@media(max-width:720px){.wrap{padding:0 22px}}
+
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;color:var(--ink)}
+h1{font-size:clamp(38px,4.6vw,58px);line-height:1.08}
+h2{font-size:clamp(30px,3.4vw,40px);line-height:1.15}
+h3{font-size:clamp(20px,2vw,23px);line-height:1.25;font-weight:500}
+p{margin:0}
+
+.eyebrow{
+  font:500 12px var(--mono);letter-spacing:0.14em;color:var(--teal);
+  text-transform:uppercase;display:block;
+}
+.eyebrow.oxide{color:var(--oxide)}
+.lede{font-size:18.5px;line-height:1.62;color:var(--ink-70);max-width:56ch}
+.mono-note{font:400 12.5px/1.6 var(--mono);color:var(--ink-35)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font:600 15px var(--sans);padding:14px 26px;border-radius:3px;
+  border:1px solid transparent;cursor:pointer;
+  transition:transform .16s ease,box-shadow .16s ease,background .16s ease;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--teal);color:var(--on-dark)}
+.btn-primary:hover{background:#12756a;box-shadow:0 6px 18px rgba(21,127,114,0.28)}
+.btn-outline{color:var(--ink);border-color:rgba(11,37,43,0.3);background:transparent}
+.btn-outline:hover{border-color:var(--ink)}
+.btn-dark{background:var(--dark);color:var(--on-dark)}
+.btn-on-dark{background:var(--teal-bright);color:var(--dark)}
+.btn-on-dark:hover{background:var(--teal-pale)}
+.btn-outline-on-dark{color:var(--on-dark);border-color:rgba(244,246,245,0.35);background:transparent}
+
+/* ───────────────── NAV ───────────────── */
+header.site{
+  position:sticky;top:0;z-index:60;background:rgba(251,251,249,0.92);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+}
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px 0}
+.brand{display:flex;align-items:center;gap:13px;color:var(--ink)}
+.brand img{height:42px;width:42px;object-fit:cover;border-radius:50%}
+.brand .bw{display:flex;flex-direction:column;line-height:1.15}
+.brand .bw b{font:600 14.5px var(--sans);letter-spacing:0.05em;color:var(--ink)}
+.brand .bw i{font:italic 400 12.5px var(--serif);color:var(--ink-50)}
+nav.main{display:flex;align-items:center;gap:28px}
+nav.main a{font:500 14px var(--sans);color:var(--ink);position:relative;padding:4px 0}
+nav.main a::after{
+  content:"";position:absolute;left:0;right:100%;bottom:-2px;height:2px;
+  background:var(--teal);transition:right .2s ease;
+}
+nav.main a:hover::after,nav.main a.current::after{right:0}
+nav.main a.current{color:var(--teal)}
+.nav-cta{font:600 14px var(--sans);color:var(--on-dark);background:var(--dark);padding:10px 20px;border-radius:3px}
+.nav-cta:hover{background:var(--teal)}
+.lang{display:flex;gap:5px}
+.lang span{
+  font:500 10.5px var(--mono);padding:4px 8px;border-radius:99px;
+  border:1px solid var(--line-strong);color:var(--ink-50);letter-spacing:0.05em;
+}
+.lang span.on{background:var(--teal);border-color:var(--teal);color:var(--on-dark)}
+.burger{display:none;background:none;border:1px solid var(--line-strong);border-radius:3px;padding:9px 11px;cursor:pointer}
+.burger svg{display:block;stroke:var(--ink)}
+.mobile-menu{display:none;flex-direction:column;gap:2px;padding:10px 22px 18px;border-top:1px solid var(--line);background:var(--paper)}
+.mobile-menu a{font:500 16px var(--sans);color:var(--ink);padding:11px 4px;border-bottom:1px solid var(--line)}
+.mobile-menu a.current{color:var(--teal)}
+.mobile-menu.open{display:flex}
+@media(max-width:1020px){
+  nav.main,.nav-cta,.lang{display:none}
+  .burger{display:block}
+}
+
+/* ───────────────── VIEWS / ROUTER ───────────────── */
+main [data-view]{display:none}
+main [data-view].active{display:block;animation:viewin .45s ease both}
+@keyframes viewin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* reveals */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  main [data-view].active{animation:none}
+  *{animation-duration:.001s !important}
+}
+
+section{padding:88px 0}
+@media(max-width:720px){section{padding:56px 0}}
+.band-alt{background:var(--paper-alt)}
+.band-dark{
+  background:var(--dark);color:var(--on-dark);
+  background-image:linear-gradient(rgba(79,179,165,0.05) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(79,179,165,0.05) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+.band-dark h2,.band-dark h3{color:var(--on-dark)}
+.band-dark .lede{color:var(--on-dark-70)}
+.band-dark .eyebrow{color:var(--teal-bright)}
+.band-dark .mono-note{color:var(--ink-35)}
+
+.sec-head{display:flex;flex-direction:column;gap:16px;max-width:720px;margin-bottom:52px}
+.grid-2{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:center}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+@media(max-width:960px){.grid-2{grid-template-columns:1fr;gap:44px}.grid-3{grid-template-columns:1fr}.grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid-4{grid-template-columns:1fr}}
+
+/* ───────────────── HERO ───────────────── */
+.hero{padding:86px 0 72px}
+.hero-inner{display:grid;grid-template-columns:1.08fr 1fr;gap:60px;align-items:center}
+@media(max-width:960px){.hero-inner{grid-template-columns:1fr;gap:48px}}
+.hero-copy{display:flex;flex-direction:column;gap:24px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+.fig{display:flex;flex-direction:column;gap:10px;align-items:center}
+.figcap{font:400 11.5px var(--mono);color:var(--ink-35);letter-spacing:0.02em}
+
+/* flow animation in hero schematic */
+.flow-oxide,.flow-teal{stroke-dasharray:7 9}
+.flow-oxide{animation:flow 1.6s linear infinite}
+.flow-teal{animation:flow 1.6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-16}}
+
+/* partner strip */
+.partners{
+  display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+  padding:24px 44px;background:var(--paper-alt);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.partners .plabel{font:500 11px var(--mono);letter-spacing:0.12em;color:var(--ink-50);margin-right:8px}
+.partners b{font:600 14px var(--sans);color:var(--ink)}
+.partners i{color:var(--teal-bright);font-style:normal}
+
+/* problem chips + photo */
+.prob-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+@media(max-width:860px){.prob-cards{grid-template-columns:1fr}}
+.prob-card{
+  background:var(--white);border:1px solid var(--line);border-radius:4px;
+  border-top:3px solid var(--oxide);padding:26px 24px;display:flex;flex-direction:column;gap:9px;
+}
+.prob-card h3{font-size:20px}
+.prob-card p{font-size:14.5px;color:var(--ink-70)}
+.photo-frame{border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--white)}
+.photo-frame img{width:100%}
+.photo-frame figcaption{padding:12px 18px;border-top:1px solid var(--line);font:400 11.5px var(--mono);color:var(--ink-50)}
+
+/* stat tiles */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:860px){.stat-row{grid-template-columns:1fr}}
+.stat{background:var(--white);border:1px solid var(--line);border-radius:4px;padding:26px 26px 22px;display:flex;flex-direction:column;gap:6px}
+.stat .n{font:500 44px/1 var(--serif);color:var(--teal)}
+.stat .u{font:500 11.5px var(--mono);letter-spacing:0.09em;color:var(--ink-50);text-transform:uppercase}
+.stat .d{font-size:14px;color:var(--ink-70)}
+.band-dark .stat{background:rgba(244,246,245,0.05);border-color:rgba(244,246,245,0.14)}
+.band-dark .stat .n{color:var(--teal-pale)}
+.band-dark .stat .u{color:var(--on-dark-70)}
+.band-dark .stat .d{color:var(--on-dark-70)}
+
+/* sans chips */
+.sans-row{display:flex;flex-wrap:wrap;gap:12px}
+.sans-chip{
+  font:500 14px var(--mono);color:var(--ink);padding:10px 18px;
+  border:1px solid rgba(11,37,43,0.25);border-radius:999px;background:var(--paper);
+}
+.band-dark .sans-chip{color:var(--on-dark);border-color:rgba(244,246,245,0.3);background:transparent}
+
+/* numbered process cards */
+.proc{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:28px;display:flex;flex-direction:column;gap:12px}
+.proc .num{font:500 13px var(--mono);color:var(--ink-50)}
+.proc p{font-size:15.5px;color:var(--ink-70)}
+
+/* effects list */
+.fx-list{display:grid;grid-template-columns:1fr 1fr;gap:0 44px;border-top:1px solid var(--line)}
+@media(max-width:860px){.fx-list{grid-template-columns:1fr}}
+.fx{display:grid;grid-template-columns:30px 1fr;gap:16px;padding:22px 0;border-bottom:1px solid var(--line)}
+.fx svg{width:22px;height:22px;stroke:var(--teal);fill:none;stroke-width:1.7;margin-top:2px}
+.fx h3{font-size:18px;margin-bottom:4px}
+.fx p{font-size:14.5px;color:var(--ink-70)}
+
+/* warning box */
+.warn{
+  display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;
+  border:1px solid rgba(168,90,50,0.45);border-left:4px solid var(--oxide);
+  background:#FAF3EE;border-radius:4px;padding:24px 26px;
+}
+.warn svg{width:24px;height:24px;stroke:var(--oxide);fill:none;stroke-width:1.8;margin-top:3px}
+.warn h3{font-size:18px;color:var(--oxide);margin-bottom:6px}
+.warn p{font-size:15px;color:var(--ink-70);max-width:70ch}
+
+/* partner cards on dark */
+.pcards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.pcards{grid-template-columns:1fr}}
+.pcard{padding:20px 22px;border:1px solid rgba(244,246,245,0.16);border-radius:4px;display:flex;flex-direction:column;gap:4px}
+.pcard b{font:600 16px var(--sans);color:var(--on-dark)}
+.pcard span{font:400 12px var(--mono);color:var(--ink-35)}
+
+/* ───────────────── GAMMES ───────────────── */
+.gamme{
+  display:grid;grid-template-columns:0.92fr 1.08fr;gap:52px;align-items:center;
+  padding:46px;background:var(--white);border:1px solid var(--line);border-radius:6px;
+}
+.gamme.flip{grid-template-columns:1.08fr 0.92fr}
+.gamme.flip .g-media{order:2}
+@media(max-width:920px){.gamme,.gamme.flip{grid-template-columns:1fr;padding:28px}.gamme.flip .g-media{order:0}}
+.g-media{border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
+.g-body{display:flex;flex-direction:column;gap:16px}
+.g-tag{font:500 12px var(--mono);letter-spacing:0.12em}
+.g-body h3{font-size:clamp(24px,2.6vw,30px)}
+.g-body p{font-size:16px;color:var(--ink-70);max-width:56ch}
+.g-specs{display:flex;flex-wrap:wrap;gap:8px}
+.g-spec{font:500 12.5px var(--mono);color:var(--ink-50);border:1px solid var(--line-strong);border-radius:3px;padding:6px 12px}
+.gammes-stack{display:flex;flex-direction:column;gap:28px}
+.gamme.coming{
+  border-style:dashed;background:transparent;grid-template-columns:1fr;text-align:center;
+  padding:56px 46px;align-items:center;justify-items:center;
+}
+.gamme.coming .g-body{align-items:center}
+
+/* zeros row */
+.zeros{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line-strong);border:1px solid var(--line-strong);border-radius:6px;overflow:hidden}
+@media(max-width:860px){.zeros{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.zeros{grid-template-columns:1fr}}
+.zero{background:var(--white);padding:20px 22px;display:flex;flex-direction:column;gap:3px}
+.zero b{font:600 22px var(--serif);color:var(--ink)}
+.zero span{font:400 13px var(--mono);color:var(--ink-50)}
+
+/* ───────────────── RESULTS TABLE ───────────────── */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line-strong);border-radius:6px;background:var(--white)}
+table.lab{border-collapse:collapse;width:100%;min-width:640px}
+table.lab th,table.lab td{padding:15px 24px;text-align:right;font:400 15px var(--mono);font-variant-numeric:tabular-nums}
+table.lab th:first-child,table.lab td:first-child{text-align:left}
+table.lab thead th{
+  background:var(--dark);font:500 11.5px var(--mono);letter-spacing:0.08em;text-transform:lowercase;
+}
+table.lab thead th:first-child{color:var(--on-dark-70)}
+table.lab thead th.avant{color:var(--oxide-pale)}
+table.lab thead th.apres{color:var(--teal-pale)}
+table.lab thead th.ecart{color:var(--on-dark-70)}
+table.lab tbody td:first-child{font-family:var(--sans);font-weight:500;font-size:15.5px;color:var(--ink)}
+table.lab tbody td:first-child small{color:var(--ink-35);font-weight:400}
+table.lab tbody .avant{color:var(--oxide)}
+table.lab tbody .apres{color:var(--teal);font-weight:600}
+table.lab tbody .ecart{color:var(--ink-70);font-size:14px}
+table.lab tbody tr{border-bottom:1px solid var(--line)}
+table.lab tbody tr:nth-child(even){background:#FAFBFA}
+table.lab tbody tr:last-child{border-bottom:none}
+.legend{display:flex;gap:22px;margin:20px 2px 0;font:400 12.5px var(--mono);color:var(--ink-50);flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:baseline}
+
+/* ───────────────── DISTRIBUTEURS ───────────────── */
+.dist-layout{display:grid;grid-template-columns:1.15fr 0.85fr;gap:44px;align-items:start}
+@media(max-width:960px){.dist-layout{grid-template-columns:1fr}}
+.map-card{
+  background:var(--dark);border-radius:8px;padding:28px;position:relative;
+  background-image:linear-gradient(rgba(79,179,165,0.05) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(79,179,165,0.05) 1px,transparent 1px);
+  background-size:42px 42px;
+}
+.map-card svg{width:100%;height:auto;display:block}
+.map-country{fill:#123338;stroke:rgba(79,179,165,0.55);stroke-width:1.1}
+.map-context{fill:#0E2A30;stroke:rgba(79,179,165,0.18);stroke-width:0.8}
+.map-inset-box{fill:rgba(8,25,29,0.55);stroke:rgba(79,179,165,0.4);stroke-dasharray:5 4;stroke-width:0.9}
+.map-inset-label{font:500 10px var(--mono);fill:#8A9795;letter-spacing:0.08em}
+.dpt circle.core{fill:var(--teal-pale)}
+.dpt circle.halo{fill:none;stroke:var(--teal-pale);stroke-width:1.4;opacity:0.8;transform-origin:center;animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{0%{transform:scale(0.5);opacity:0.9}70%{transform:scale(2.1);opacity:0}100%{transform:scale(2.1);opacity:0}}
+.dpt text{font:500 11px var(--mono);fill:#DDE7E4;paint-order:stroke;stroke:rgba(11,37,43,0.85);stroke-width:3px}
+.dpt{cursor:pointer}
+.dpt.dim{opacity:0.22}
+.dpt.hot circle.core{fill:#fff}
+.dist-side{display:flex;flex-direction:column;gap:16px}
+.search{
+  display:flex;align-items:center;gap:10px;background:var(--white);
+  border:1px solid var(--line-strong);border-radius:4px;padding:12px 16px;
+}
+.search svg{width:17px;height:17px;stroke:var(--ink-50);fill:none;stroke-width:2;flex:none}
+.search input{border:none;outline:none;flex:1;font:400 15px var(--sans);color:var(--ink);background:transparent}
+.dist-list{display:flex;flex-direction:column;gap:12px;max-height:520px;overflow-y:auto;padding-right:4px}
+.dist-card{
+  background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);
+  border-radius:4px;padding:16px 18px;display:flex;flex-direction:column;gap:3px;cursor:pointer;
+  transition:border-color .15s ease,transform .15s ease;
+}
+.dist-card:hover,.dist-card.hot{border-color:var(--teal);transform:translateX(2px)}
+.dist-card b{font:600 15.5px var(--sans);color:var(--ink)}
+.dist-card span{font:400 13px var(--sans);color:var(--ink-50)}
+.dist-card .z{font:500 11px var(--mono);color:var(--teal);letter-spacing:0.06em;text-transform:uppercase}
+.dist-empty{font:400 14px var(--sans);color:var(--ink-50);padding:18px 4px;display:none}
+.demo-note{
+  font:400 12px var(--mono);color:var(--ink-35);border:1px dashed var(--line-strong);
+  border-radius:4px;padding:10px 14px;
+}
+
+/* ───────────────── CONTACT ───────────────── */
+.contact-grid{display:grid;grid-template-columns:1fr 0.85fr;gap:60px;align-items:start}
+@media(max-width:920px){.contact-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+.field label{font:500 11px var(--mono);letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-50)}
+.field input,.field select,.field textarea{
+  font:400 15.5px var(--sans);color:var(--ink);background:var(--white);
+  border:1px solid var(--line-strong);border-radius:3px;padding:12px 14px;width:100%;
+}
+.field textarea{resize:vertical;min-height:110px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:520px){.frow{grid-template-columns:1fr}}
+.contact-aside{display:flex;flex-direction:column;gap:26px}
+.contact-block{border:1px solid var(--line);border-radius:6px;background:var(--white);padding:28px}
+.contact-block h3{margin-bottom:10px}
+.contact-block p{font-size:14.5px;color:var(--ink-70)}
+.contact-block ul{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+.contact-block li{display:flex;gap:10px;font-size:14.5px;color:var(--ink-70)}
+.contact-block li svg{width:17px;height:17px;stroke:var(--teal);fill:none;stroke-width:2;flex:none;margin-top:3px}
+
+/* CTA band */
+.cta-band{display:grid;grid-template-columns:1.25fr auto;gap:44px;align-items:center}
+@media(max-width:860px){.cta-band{grid-template-columns:1fr}}
+
+/* footer */
+footer.site{background:var(--darker);color:var(--on-dark-70);padding:44px 0 36px}
+.foot-row{display:flex;align-items:flex-start;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.foot-brand{display:flex;align-items:center;gap:12px}
+.foot-brand img{height:34px;width:34px;border-radius:50%;object-fit:cover}
+.foot-brand i{font:italic 400 14.5px var(--serif);color:var(--ink-35)}
+.foot-nav{display:flex;gap:22px;flex-wrap:wrap}
+.foot-nav a{font:500 13.5px var(--sans);color:var(--on-dark-70)}
+.foot-nav a:hover{color:var(--on-dark)}
+.foot-note{
+  margin-top:30px;padding-top:20px;border-top:1px solid rgba(244,246,245,0.1);
+  font:400 11.5px var(--mono);color:var(--ink-35);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav-row">
+    <a class="brand" href="#/">
+      <img src="{{IMG_LOGO}}" alt="Aqua Equilibrium">
+      <span class="bw"><b>AQUA EQUILIBRIUM</b><i>l&rsquo;équilibre au service de l&rsquo;eau</i></span>
+    </a>
+    <nav class="main" aria-label="Navigation principale">
+      <a href="#/technologie" data-nav="technologie">La technologie</a>
+      <a href="#/gammes" data-nav="gammes">Gammes</a>
+      <a href="#/resultats" data-nav="resultats">Résultats mesurés</a>
+      <a href="#/distributeurs" data-nav="distributeurs">Distributeurs</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:16px">
+      <div class="lang" aria-label="Langues">
+        <span class="on">FR</span><span title="Bientôt disponible">EN</span><span title="Bientôt disponible">ES</span>
+      </div>
+      <a class="nav-cta" href="#/contact">Devenir distributeur</a>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+        <svg width="20" height="16" viewBox="0 0 20 16" stroke-width="2"><path d="M0 1h20M0 8h20M0 15h20"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mmenu">
+    <a href="#/" data-nav="accueil">Accueil</a>
+    <a href="#/technologie" data-nav="technologie">La technologie</a>
+    <a href="#/gammes" data-nav="gammes">Gammes</a>
+    <a href="#/resultats" data-nav="resultats">Résultats mesurés</a>
+    <a href="#/distributeurs" data-nav="distributeurs">Distributeurs</a>
+    <a href="#/contact" data-nav="contact">Contact · Devenir distributeur</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════════ ACCUEIL ══════════════════ -->
+<div data-view="accueil">
+
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">Technologie passive de traitement de l&rsquo;eau</span>
+        <h1>L&rsquo;eau retrouve son équilibre. Vos réseaux aussi.</h1>
+        <p class="lede">Ring Orion est un anneau qui s&rsquo;installe sur la tuyauterie et restaure l&rsquo;équilibre rédox et ionique de l&rsquo;eau en circulation. La corrosion, le calcaire et le biofilm régressent — sans chimie, sans énergie, sans entretien.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#/resultats">Voir les résultats mesurés</a>
+          <a class="btn btn-outline" href="#/technologie">Comment ça marche</a>
+        </div>
+        <span class="mono-note">Conçu et fabriqué par Aqua Equilibrium · Propriété intellectuelle déposée à l&rsquo;INPI</span>
+      </div>
+      <figure class="photo-frame rv" style="margin:0">
+        <img src="{{IMG_DN150}}" alt="Anneau Ring Orion DN150 réel, en deux demi-coquilles assemblées par vis" width="760" height="596">
+        <figcaption>anneau Ring Orion DN150 — produit réel, montage sur conduite existante</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="partners rv">
+    <span class="plabel">ÉVALUÉ AVEC</span>
+    <b>Interreg SOCORRO</b><i>·</i>
+    <b>Corrosie Labs (2022)</b><i>·</i>
+    <b>Université de Limoges / ENSIL</b><i>·</i>
+    <b>Dalkia — groupe EDF</b>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="eyebrow oxide">Le déséquilibre</span>
+        <h2>Ce que l&rsquo;eau déséquilibrée fait à vos installations</h2>
+        <p class="lede">Privée de son équilibre naturel, l&rsquo;eau cesse d&rsquo;être un solvant stable : elle attaque les métaux, dépose le calcaire et nourrit le biofilm.</p>
+      </div>
+      <div class="grid-2">
+        <figure class="photo-frame rv" style="margin:0">
+          <img src="{{IMG_TUYAUX}}" alt="Coupes de deux conduites : à gauche une conduite entartrée dont le diamètre utile est réduit, à droite une conduite saine" width="1100" height="558">
+          <figcaption>coupe de conduite entartrée (à gauche) vs conduite saine (à droite)</figcaption>
+        </figure>
+        <div style="display:flex;flex-direction:column;gap:20px" class="rv">
+          <div class="prob-card"><h3>Corrosion</h3><p>La dégradation des surfaces métalliques enclenche une chaîne de réactions qui fragilise durablement les installations de chauffage et sanitaires.</p></div>
+          <div class="prob-card"><h3>Calcaire</h3><p>Le tartre se fixe sur les résistances et dans les canalisations : isolant thermique, il fait chuter le rendement et favorise le développement bactérien.</p></div>
+          <div class="prob-card"><h3>Embouage</h3><p>Dans les circuits fermés, l&rsquo;oxydation produit des boues qui détériorent les équipements et réduisent le rendement des installations.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="eyebrow">Résultats mesurés</span>
+        <h2>Mesuré, pas promis.</h2>
+        <p class="lede">Relevés avant / après pose sur une installation industrielle en exploitation à Tanger, circuits DN65 et DN150.</p>
+      </div>
+      <div class="stat-row rv">
+        <div class="stat"><span class="n">−87&thinsp;%</span><span class="u">fer dissous · DN150</span><span class="d">0,89 → 0,12 mg/l après 6 mois</span></div>
+        <div class="stat"><span class="n">−88&thinsp;%</span><span class="u">flore bactérienne · circuit 1</span><span class="d">18&thinsp;420 → 2&thinsp;240 germes/ml</span></div>
+        <div class="stat"><span class="n">+0,5</span><span class="u">pH · les deux circuits</span><span class="d">vers la zone de stabilité de l&rsquo;eau</span></div>
+      </div>
+      <div style="margin-top:36px" class="rv">
+        <a class="btn btn-on-dark" href="#/resultats">Lire le rapport de mesures</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="eyebrow">Les gammes</span>
+        <h2>Une famille de solutions, un même principe</h2>
+        <p class="lede">Chaque gamme cible une problématique — embouage, calcaire, équilibre global — et se dimensionne au diamètre DN de votre réseau.</p>
+      </div>
+      <div class="grid-3 rv">
+        <div class="proc"><span class="num" style="color:var(--teal)">RING ORION</span><h3>Equilibrium</h3><p>Le rééquilibrage global du réseau : corrosion, tartre et biofilm sous contrôle, durablement.</p></div>
+        <div class="proc"><span class="num" style="color:var(--teal)">RING ORION</span><h3>DissoLvium Calc</h3><p>La solution calcaire : dissout progressivement le tartre existant et prévient les nouveaux dépôts.</p></div>
+        <div class="proc"><span class="num" style="color:var(--teal)">GAMME</span><h3>Désemboueur PHI</h3><p>Le traitement des circuits fermés chargés : embouage et dépôts, en chauffage comme en climatisation.</p></div>
+      </div>
+      <div style="display:flex;gap:24px;align-items:center;margin-top:36px;flex-wrap:wrap" class="rv">
+        <a class="btn btn-dark" href="#/gammes">Découvrir les gammes</a>
+        <span class="mono-note">dimensionnées par DN · disponibles via nos distributeurs</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-alt">
+    <div class="wrap rv">
+      <div class="sans-row" style="justify-content:center">
+        <span class="sans-chip">sans chimie</span>
+        <span class="sans-chip">sans énergie</span>
+        <span class="sans-chip">sans entretien</span>
+        <span class="sans-chip">sans consommables</span>
+        <span class="sans-chip">sans obsolescence programmée</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark">
+    <div class="wrap cta-band">
+      <div class="rv">
+        <span class="eyebrow">Distribution</span>
+        <h2 style="margin:14px 0 12px">Le fabricant conçoit. Nos distributeurs vous accompagnent.</h2>
+        <p class="lede">Aqua Equilibrium développe et fabrique les technologies Ring Orion. Pour l&rsquo;étude de votre réseau, l&rsquo;installation et le suivi, nous vous mettons en relation avec le distributeur le plus proche.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px" class="rv">
+        <a class="btn btn-on-dark" href="#/distributeurs">Trouver un distributeur</a>
+        <a class="btn btn-outline-on-dark" href="#/contact">Devenir distributeur</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════ TECHNOLOGIE ══════════════════ -->
+<div data-view="technologie">
+
+  <section class="hero" style="padding-bottom:56px">
+    <div class="wrap hero-inner">
+      <div class="sec-head" style="margin-bottom:0">
+        <span class="eyebrow">La technologie</span>
+        <h1 style="font-size:clamp(34px,4vw,50px)">Un traitement passif, à la source du déséquilibre</h1>
+        <p class="lede">Dans la nature, l&rsquo;eau agit comme un véritable solvant : c&rsquo;est elle qui creuse les grottes en dissolvant le calcaire. Dans nos réseaux, cette capacité à équilibrer les milieux aqueux s&rsquo;altère. Les procédés Orion Technologies — plus de 20 ans de recherche — la lui restituent.</p>
+      </div>
+      <div class="fig rv">
+        <svg viewBox="0 0 460 330" style="width:100%;max-width:460px" role="img" aria-label="Schéma : anneau Ring Orion monté sur une conduite, eau déséquilibrée en entrée, eau équilibrée en sortie">
+          <line x1="10" y1="125" x2="450" y2="125" stroke="#0B252B" stroke-width="2"/>
+          <line x1="10" y1="205" x2="450" y2="205" stroke="#0B252B" stroke-width="2"/>
+          <line x1="10" y1="139" x2="450" y2="139" stroke="#9FB6B3" stroke-width="1"/>
+          <line x1="10" y1="191" x2="450" y2="191" stroke="#9FB6B3" stroke-width="1"/>
+          <line class="flow-oxide" x1="30" y1="165" x2="185" y2="165" stroke="#A85A32" stroke-width="2.4"/>
+          <line class="flow-teal" x1="275" y1="165" x2="430" y2="165" stroke="#157F72" stroke-width="2.4"/>
+          <ellipse cx="230" cy="165" rx="34" ry="74" fill="#FBFBF9" stroke="#157F72" stroke-width="10"/>
+          <ellipse cx="230" cy="165" rx="20" ry="56" fill="none" stroke="#0B252B" stroke-width="1.5"/>
+          <circle cx="230" cy="91" r="4" fill="#157F72"/>
+          <circle cx="230" cy="239" r="4" fill="#157F72"/>
+          <line x1="230" y1="252" x2="230" y2="290" stroke="#5C6B6C" stroke-width="1"/>
+          <text x="230" y="308" text-anchor="middle" style="font:500 12px 'IBM Plex Mono',monospace" fill="#0B252B">anneau Ring Orion</text>
+          <text x="100" y="112" text-anchor="middle" style="font:400 11px 'IBM Plex Mono',monospace" fill="#A85A32">eau déséquilibrée</text>
+          <text x="360" y="112" text-anchor="middle" style="font:400 11px 'IBM Plex Mono',monospace" fill="#157F72">eau équilibrée</text>
+          <text x="444" y="230" text-anchor="end" style="font:400 11px 'IBM Plex Mono',monospace" fill="#5C6B6C">conduite DN15–DN1200</text>
+        </svg>
+        <span class="figcap">fig. 1 — montage sur conduite existante, sans raccordement</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-alt">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="eyebrow">Principe fondamental</span>
+        <h2>Agir sur les causes, pas sur les conséquences</h2>
+        <p class="lede">Plutôt que d&rsquo;ajouter des produits pour corriger les symptômes, la technologie rétablit les équilibres thermodynamiques naturels du milieu aqueux. Elle agit sur :</p>
+      </div>
+      <div class="fx-list rv">
+        <div class="fx"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg><div><h3>Les équilibres rédox (Eh)</h3><p>Le potentiel d&rsquo;oxydoréduction retrouve la zone de stabilité de l&rsquo;eau.</p></div></div>
+        <div class="fx"><svg viewBox="0 0 24 24"><path d="M12 3v18M5 8l7-5 7 5"/></svg><div><h3>Le pH dans sa capacité tampon</h3><p>Sans correction chimique : le pH se stabilise dans sa zone tampon naturelle.</p></div></div>
+        <div class="fx"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/></svg><div><h3>L&rsquo;hydratation des espèces dissoutes</h3><p>Chaque ion retrouve une structure stable, entouré de molécules d&rsquo;eau.</p></div></div>
+        <div class="fx"><svg viewBox="0 0 24 24"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="M9.5 9.5l5 5"/></svg><div><h3>Les interactions ioniques en solution</h3><p>Moins de réactions parasites : corrosion, précipitation, dépôts.</p></div></div>
+      </div>
+      <p class="mono-note rv" style="margin-top:26px">Contrairement aux traitements conventionnels, aucune modification chimique de la composition de l&rsquo;eau n&rsquo;est réalisée.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="eyebrow">Mécanisme d&rsquo;action</span>
+        <h2>Avant, pendant, après</h2>
+      </div>
+      <div class="grid-3 rv">
+        <div class="proc" style="border-top:3px solid var(--oxide)">
+          <span class="num" style="color:var(--oxide)">AVANT TRAITEMENT</span>
+          <h3>Déséquilibres et réactions parasites</h3>
+          <p>Ions désorganisés, gradients électrochimiques locaux. Les réactions parasites s&rsquo;enchaînent : corrosion, précipitation du tartre, dépôts.</p>
+        </div>
+        <div class="proc" style="border-top:3px solid var(--ink)">
+          <span class="num">ACTION RING ORION</span>
+          <h3>Rééquilibrage physique du milieu</h3>
+          <p>Rééquilibrage des potentiels (Eh, pH), réorganisation des couches d&rsquo;hydratation, stabilisation énergétique des espèces dissoutes.</p>
+        </div>
+        <div class="proc" style="border-top:3px solid var(--teal)">
+          <span class="num" style="color:var(--teal)">APRÈS STABILISATION</span>
+          <h3>Équilibre thermodynamique retrouvé</h3>
+          <p>Ions hydratés et stables, diminution des réactions parasites, milieu thermodynamiquement cohérent. Le réseau se protège.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-alt">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="eyebrow">Applications</span>
+        <h2>Tous les types de réseaux d&rsquo;eau</h2>
+      </div>
+      <div class="grid-4 rv">
+        <div class="proc"><span class="num">01</span><h3>Circuits fermés</h3><p>Chauffage et refroidissement : embouage et oxydes sous contrôle.</p></div>
+        <div class="proc"><span class="num">02</span><h3>Réseaux industriels</h3><p>Moins d&rsquo;arrêts, moins de maintenance liée à la corrosion.</p></div>
+        <div class="proc"><span class="num">03</span><h3>Échangeurs thermiques</h3><p>Surfaces d&rsquo;échange propres, rendement préservé.</p></div>
+        <div class="proc"><span class="num">04</span><h3>Boucles hydrauliques complexes</h3><p>Stabilité globale, y compris sur les réseaux étendus.</p></div>
+      </div>
+      <div class="warn rv" style="margin-top:40px">
+        <svg viewBox="0 0 24 24"><path d="M12 3L2 21h20L12 3zM12 10v5M12 18.5v.5"/></svg>
+        <div>
+          <h3>Point critique — compatibilité des traitements</h3>
+          <p>Ring Orion est un système passif de rééquilibrage : il n&rsquo;est pas compatible avec une logique de traitement chimique active (inhibiteurs de corrosion, correcteurs de pH, produits filmants, biocides). Ces produits imposent un état artificiel à l&rsquo;eau et limitent fortement l&rsquo;efficacité du système. Aucun traitement chimique ne doit être utilisé en parallèle.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap grid-2">
+      <div class="rv">
+        <span class="eyebrow">Installation</span>
+        <h2 style="margin:14px 0 16px">Un montage simple, sans raccordement</h2>
+        <p class="lede">L&rsquo;anneau se monte directement sur la tuyauterie existante, dimensionné au diamètre DN du réseau — en amont des points d&rsquo;usage clés. Aucun raccordement électrique ni hydraulique, aucune modification du réseau.</p>
+        <p class="mono-note" style="margin-top:18px">pose type en habitat individuel ci-contre · en industriel : montage sur circuit, dimensionnement par nos distributeurs</p>
+      </div>
+      <figure class="photo-frame rv" style="margin:0">
+        <img src="{{IMG_POSE}}" alt="Schéma de pose du Ring en habitat individuel, en amont de la douche, du lavabo et des sanitaires" width="620" height="564">
+        <figcaption>schéma de pose — habitat individuel</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="band-dark">
+    <div class="wrap grid-2" style="align-items:start">
+      <div class="rv">
+        <span class="eyebrow">Caution scientifique</span>
+        <h2 style="margin:14px 0 16px">Une technologie étudiée dans des programmes européens</h2>
+        <p class="lede">En 2022, les procédés Orion Technologies ont intégré les programmes européens Interreg de lutte contre la corrosion SOCORRO et Corrosie Labs, aux côtés d&rsquo;universités du Royaume-Uni, de Belgique, des Pays-Bas et de France. Nous menons par ailleurs des études pour le compte de Dalkia (groupe EDF) et collaborons avec l&rsquo;Université de Limoges via l&rsquo;ENSIL.</p>
+        <p class="mono-note" style="margin-top:18px">technologie protégée — propriété intellectuelle déposée à l&rsquo;INPI</p>
+      </div>
+      <div class="pcards rv">
+        <div class="pcard"><b>Interreg SOCORRO</b><span>programme européen · corrosion</span></div>
+        <div class="pcard"><b>Corrosie Labs</b><span>programme européen · 2022</span></div>
+        <div class="pcard"><b>Université de Limoges / ENSIL</b><span>recherche académique</span></div>
+        <div class="pcard"><b>Dalkia — groupe EDF</b><span>partenaire industriel</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap cta-band">
+      <div class="rv">
+        <h2>Voir la technologie à l&rsquo;épreuve des chiffres</h2>
+      </div>
+      <div class="rv"><a class="btn btn-primary" href="#/resultats">Résultats mesurés</a></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════ GAMMES ══════════════════ -->
+<div data-view="gammes">
+
+  <section class="hero" style="padding-bottom:56px">
+    <div class="wrap">
+      <div class="sec-head" style="margin-bottom:0;max-width:820px">
+        <span class="eyebrow">Les gammes</span>
+        <h1 style="font-size:clamp(34px,4vw,50px)">Un principe, plusieurs réponses</h1>
+        <p class="lede">Toutes les gammes reposent sur le même principe de rééquilibrage passif, chacune ciblant une problématique précise. Chaque anneau est dimensionné au diamètre nominal (DN) de votre conduite. Disponibles via notre réseau de distributeurs.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:20px">
+    <div class="wrap gammes-stack">
+
+      <div class="gamme rv">
+        <div class="g-media"><img src="{{IMG_EQ}}" alt="Anneaux Ring Orion Equilibrium" width="560" height="521"></div>
+        <div class="g-body">
+          <span class="g-tag" style="color:var(--teal)">RING ORION · GAMME PRINCIPALE</span>
+          <h3>Equilibrium</h3>
+          <p>Le rééquilibrage global du réseau. L&rsquo;eau retrouve son état thermodynamique stable : corrosion, entartrage et biofilm régressent dans la durée, mesurables par analyse d&rsquo;eau — comme sur l&rsquo;installation de Tanger.</p>
+          <div class="g-specs">
+            <span class="g-spec">DN 15 → 1200</span>
+            <span class="g-spec">réseaux sanitaires &amp; industriels</span>
+            <span class="g-spec">montage sans raccordement</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gamme flip rv">
+        <div class="g-media"><img src="{{IMG_DISSO}}" alt="Anneaux Ring Orion DissoLvium Calc" width="560" height="338"></div>
+        <div class="g-body">
+          <span class="g-tag" style="color:var(--teal)">RING ORION · SOLUTION CALCAIRE</span>
+          <h3>DissoLvium Calc</h3>
+          <p>Conçu pour les réseaux d&rsquo;eau dure : il rétablit les conditions dans lesquelles le calcaire déjà formé se dissout progressivement et ne se reforme pas. Débit et efficacité thermique restaurés, équipements protégés.</p>
+          <div class="g-specs">
+            <span class="g-spec">dissolution du calcaire existant</span>
+            <span class="g-spec">prévention des nouveaux dépôts</span>
+            <span class="g-spec">dimensionné par DN</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gamme rv">
+        <div class="g-media" style="padding:30px">
+          <svg viewBox="0 0 380 250" style="width:100%;max-width:380px" role="img" aria-label="Schéma technique du désemboueur PHI monté sur circuit fermé">
+            <rect x="30" y="95" width="320" height="60" rx="6" fill="none" stroke="#0B252B" stroke-width="2"/>
+            <rect x="140" y="78" width="100" height="94" rx="8" fill="#F1F3F1" stroke="#157F72" stroke-width="3"/>
+            <line x1="158" y1="86" x2="158" y2="164" stroke="#157F72" stroke-width="1.4"/>
+            <line x1="176" y1="86" x2="176" y2="164" stroke="#157F72" stroke-width="1.4"/>
+            <line x1="194" y1="86" x2="194" y2="164" stroke="#157F72" stroke-width="1.4"/>
+            <line x1="212" y1="86" x2="212" y2="164" stroke="#157F72" stroke-width="1.4"/>
+            <line x1="45" y1="125" x2="120" y2="125" stroke="#A85A32" stroke-width="2" stroke-dasharray="6 7"/>
+            <line x1="260" y1="125" x2="335" y2="125" stroke="#157F72" stroke-width="2" stroke-dasharray="6 7"/>
+            <text x="82" y="112" text-anchor="middle" style="font:400 10.5px 'IBM Plex Mono',monospace" fill="#A85A32">eau chargée</text>
+            <text x="297" y="112" text-anchor="middle" style="font:400 10.5px 'IBM Plex Mono',monospace" fill="#157F72">eau clarifiée</text>
+            <text x="190" y="205" text-anchor="middle" style="font:400 11px 'IBM Plex Mono',monospace" fill="#5C6B6C">désemboueur PHI · montage en circuit fermé</text>
+            <text x="190" y="52" text-anchor="middle" style="font:500 12px 'IBM Plex Mono',monospace" fill="#0B252B">coupe schématique</text>
+          </svg>
+        </div>
+        <div class="g-body">
+          <span class="g-tag" style="color:var(--oxide)">GAMME CIRCUITS FERMÉS</span>
+          <h3>Désemboueur PHI</h3>
+          <p>Le premier geste de remise à l&rsquo;équilibre des réseaux chargés : embouage, dépôts, eaux dégradées des circuits de chauffage et de climatisation. Permanent, sans consommable ni entretien.</p>
+          <div class="g-specs">
+            <span class="g-spec">DN 15 → 100</span>
+            <span class="g-spec">chauffage &amp; climatisation</span>
+            <span class="g-spec">désembouage permanent</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gamme coming rv">
+        <div class="g-body">
+          <span class="g-tag" style="color:var(--ink-50)">EN DÉVELOPPEMENT</span>
+          <h3>De nouvelles solutions à venir</h3>
+          <p style="max-width:52ch">La recherche Orion Technologies continue : de nouvelles applications du rééquilibrage passif sont en cours de développement et viendront compléter la famille Ring Orion.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="band-alt">
+    <div class="wrap grid-2">
+      <figure class="photo-frame rv" style="margin:0">
+        <img src="{{IMG_DN150}}" alt="Anneau Orion's Rings DN150 réel, en deux demi-coquilles assemblées par vis" width="760" height="596">
+        <figcaption>anneau DN150 — produit réel, assemblage en deux demi-coquilles</figcaption>
+      </figure>
+      <div class="rv">
+        <span class="eyebrow">Le produit</span>
+        <h2 style="margin:14px 0 16px">Pensé pour la conduite, pas pour la vitrine</h2>
+        <p class="lede">Deux demi-coquilles assemblées autour de la conduite existante, sans découpe ni soudure. L&rsquo;anneau se pose en quelques minutes et travaille ensuite en continu, sans pièce d&rsquo;usure.</p>
+        <div class="zeros" style="margin-top:28px">
+          <div class="zero"><b>0</b><span>chimie</span></div>
+          <div class="zero"><b>0</b><span>énergie</span></div>
+          <div class="zero"><b>0</b><span>entretien</span></div>
+          <div class="zero"><b>0</b><span>consommable</span></div>
+          <div class="zero"><b>0</b><span>obsolescence</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark">
+    <div class="wrap cta-band">
+      <div class="rv">
+        <h2 style="margin-bottom:10px">Quel anneau pour votre réseau ?</h2>
+        <p class="lede">Le dimensionnement se fait sur votre installation. Nos distributeurs étudient votre réseau et vous orientent vers la gamme adaptée.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px" class="rv">
+        <a class="btn btn-on-dark" href="#/distributeurs">Trouver un distributeur</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════ RÉSULTATS ══════════════════ -->
+<div data-view="resultats">
+
+  <section class="hero" style="padding-bottom:48px">
+    <div class="wrap">
+      <div class="sec-head" style="margin-bottom:0;max-width:820px">
+        <span class="eyebrow">Résultats mesurés</span>
+        <h1 style="font-size:clamp(34px,4vw,50px)">Mesuré, pas promis.</h1>
+        <p class="lede">Relevés effectués sur une installation industrielle en exploitation à Tanger : deux circuits de refroidissement équipés de systèmes Ring Orion (DN65 et DN150), suivis avant et après pose des anneaux.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:24px">
+    <div class="wrap">
+      <div class="tbl-wrap rv">
+        <table class="lab">
+          <thead>
+            <tr>
+              <th>paramètre / circuit</th>
+              <th class="avant">t₀ (avant)</th>
+              <th class="apres">t₊₆ mois (après)</th>
+              <th class="ecart">écart</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Fer dissous · DN65 <small>(mg/l)</small></td><td class="avant">0,21</td><td class="apres">0,06</td><td class="ecart">−71&thinsp;%</td></tr>
+            <tr><td>Fer dissous · DN150 <small>(mg/l)</small></td><td class="avant">0,89</td><td class="apres">0,12</td><td class="ecart">−87&thinsp;%</td></tr>
+            <tr><td>Flore bactérienne · circuit 1 <small>(germes/ml)</small></td><td class="avant">18&thinsp;420</td><td class="apres">2&thinsp;240</td><td class="ecart">−88&thinsp;%</td></tr>
+            <tr><td>Flore bactérienne · circuit 2 <small>(germes/ml)</small></td><td class="avant">26&thinsp;650</td><td class="apres">5&thinsp;500</td><td class="ecart">−79&thinsp;%</td></tr>
+            <tr><td>pH · circuit 1</td><td class="avant">7,2</td><td class="apres">7,7</td><td class="ecart">+0,5</td></tr>
+            <tr><td>pH · circuit 2</td><td class="avant">7,1</td><td class="apres">7,6</td><td class="ecart">+0,5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="legend rv">
+        <span><i style="background:var(--oxide)"></i>avant installation</span>
+        <span><i style="background:var(--teal)"></i>après 6 mois</span>
+        <span style="margin-left:auto">source : synthèse technique Aqua Equilibrium, données de suivi terrain — site industriel TE TAC, Tanger</span>
+      </div>
+      <div class="grid-2" style="margin-top:56px;align-items:start">
+        <div class="rv">
+          <span class="eyebrow">Lecture</span>
+          <h2 style="margin:14px 0 16px;font-size:clamp(24px,2.6vw,32px)">Une eau maintenue claire, sans dépôts</h2>
+          <p class="lede" style="font-size:16.5px">Sur les deux circuits, le fer dissous — marqueur direct de la corrosion — chute de plus de 70&thinsp;%. La charge bactérienne recule d&rsquo;un facteur 5 à 8, et le pH remonte vers la zone de stabilité de l&rsquo;eau. L&rsquo;évolution se maintient dans la durée, sans aucun ajout chimique.</p>
+          <p class="mono-note" style="margin-top:18px">relevés intermédiaires disponibles dans la fiche de résultats — communiquée sur demande</p>
+        </div>
+        <div class="stat-row rv" style="grid-template-columns:1fr 1fr">
+          <div class="stat"><span class="n">−71&thinsp;%</span><span class="u">fer dissous · DN65</span><span class="d">0,21 → 0,06 mg/l</span></div>
+          <div class="stat"><span class="n">−79&thinsp;%</span><span class="u">flore · circuit 2</span><span class="d">26&thinsp;650 → 5&thinsp;500 germes/ml</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark">
+    <div class="wrap cta-band">
+      <div class="rv">
+        <h2 style="margin-bottom:10px">Le protocole complet, présenté à votre équipe</h2>
+        <p class="lede">Dossier technique, fiche de résultats et protocole de mesures sont présentés en rendez-vous, par nos distributeurs ou par le fabricant.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px" class="rv">
+        <a class="btn btn-on-dark" href="#/contact">Demander une présentation</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════ DISTRIBUTEURS ══════════════════ -->
+<div data-view="distributeurs">
+
+  <section class="hero" style="padding-bottom:48px">
+    <div class="wrap">
+      <div class="sec-head" style="margin-bottom:0;max-width:820px">
+        <span class="eyebrow">Distributeurs</span>
+        <h1 style="font-size:clamp(34px,4vw,50px)">Un fabricant, un réseau de proximité</h1>
+        <p class="lede">Aqua Equilibrium conçoit et fabrique. L&rsquo;étude de votre réseau, l&rsquo;installation et le suivi passent par nos distributeurs — en France, en Espagne et aux Canaries.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:24px">
+    <div class="wrap dist-layout">
+      <div class="map-card rv">
+        <svg viewBox="0 0 {{MAP_W}} {{MAP_H}}" role="img" aria-label="Carte de France et d'Espagne avec les points du réseau de distribution ; encart Canaries en haut à gauche">
+          <path class="map-context" d="{{MAP_PORTUGAL}}"/>
+          <path class="map-country" d="{{MAP_SPAIN}}"/>
+          <path class="map-country" d="{{MAP_FRANCE}}"/>
+          <g transform="translate({{INSET_TX}},{{INSET_TY}})">
+            <rect class="map-inset-box" x="-8" y="-8" width="{{INSET_BOX_W}}" height="{{INSET_BOX_H}}" rx="4"/>
+            <path class="map-country" d="{{MAP_CANARIAS}}"/>
+            <text class="map-inset-label" x="-2" y="{{INSET_LABEL_Y}}">ÎLES CANARIES</text>
+          </g>
+          <g id="map-points"></g>
+        </svg>
+      </div>
+      <div class="dist-side">
+        <div class="search rv">
+          <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7"/><path d="M15.8 15.8L21 21"/></svg>
+          <input id="dist-search" type="search" placeholder="Ville, région, nom du distributeur…" aria-label="Rechercher un distributeur">
+        </div>
+        <div class="dist-list rv" id="dist-list"></div>
+        <p class="dist-empty" id="dist-empty">Aucun distributeur ne correspond à cette recherche.</p>
+        <p class="demo-note">données de démonstration — le réseau réel sera publié prochainement</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark" style="margin-top:32px">
+    <div class="wrap cta-band">
+      <div class="rv">
+        <span class="eyebrow">Rejoindre le réseau</span>
+        <h2 style="margin:14px 0 12px">Distribuez une technologie qui se prouve par la mesure</h2>
+        <p class="lede">Conditions distributeur, accompagnement technique, formation initiale et support commercial du fabricant. Protocoles de mesure et argumentaire technique présentés en rendez-vous.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px" class="rv">
+        <a class="btn btn-on-dark" href="#/contact">Devenir distributeur</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════ CONTACT ══════════════════ -->
+<div data-view="contact">
+
+  <section class="hero" style="padding-bottom:48px">
+    <div class="wrap">
+      <div class="sec-head" style="margin-bottom:0;max-width:820px">
+        <span class="eyebrow">Contact</span>
+        <h1 style="font-size:clamp(34px,4vw,50px)">Parlons de votre réseau d&rsquo;eau</h1>
+        <p class="lede">Particulier, professionnel ou futur distributeur : écrivez-nous, nous vous répondons et vous orientons vers le bon interlocuteur.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:24px">
+    <div class="wrap contact-grid">
+      <form id="contact-form" class="rv">
+        <div class="frow">
+          <div class="field"><label for="f-nom">Nom</label><input id="f-nom" name="nom" type="text" required></div>
+          <div class="field"><label for="f-soc">Société <span style="text-transform:none;letter-spacing:0">(optionnel)</span></label><input id="f-soc" name="societe" type="text"></div>
+        </div>
+        <div class="frow">
+          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" required></div>
+          <div class="field">
+            <label for="f-profil">Vous êtes</label>
+            <select id="f-profil" name="profil">
+              <option>Particulier</option>
+              <option>Professionnel / industriel</option>
+              <option>Futur distributeur</option>
+              <option>Autre</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label for="f-msg">Message</label><textarea id="f-msg" name="message" required placeholder="Votre réseau, votre problématique, votre région…"></textarea></div>
+        <button class="btn btn-primary" type="submit">Envoyer le message</button>
+        <p class="mono-note" style="margin-top:14px">l&rsquo;envoi ouvre votre messagerie — destinataire : contact@aqua-equilibrium.com</p>
+      </form>
+      <div class="contact-aside rv">
+        <div class="contact-block">
+          <h3>Aqua Equilibrium</h3>
+          <p>Fabricant des technologies Ring Orion. L&rsquo;équilibre au service de l&rsquo;eau.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M3 6l9 7 9-7M3 6h18v12H3z"/></svg>contact@aqua-equilibrium.com</li>
+            <li><svg viewBox="0 0 24 24"><path d="M12 21c4-4.5 7-8.2 7-11.5A7 7 0 0 0 5 9.5C5 12.8 8 16.5 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>France · Espagne · Îles Canaries</li>
+          </ul>
+        </div>
+        <div class="contact-block" style="border-left:3px solid var(--teal)">
+          <h3>Devenir distributeur</h3>
+          <p>Vous installez, entretenez ou conseillez des réseaux d&rsquo;eau ? Rejoignez le réseau Ring Orion :</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>dossier technique et protocole de mesures</li>
+            <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>formation initiale et accompagnement du fabricant</li>
+            <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>conditions distributeur présentées en rendez-vous</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-row">
+      <div>
+        <div class="foot-brand">
+          <img src="{{IMG_LOGO}}" alt="">
+          <i>l&rsquo;équilibre au service de l&rsquo;eau</i>
+        </div>
+      </div>
+      <nav class="foot-nav" aria-label="Pied de page">
+        <a href="#/">Accueil</a>
+        <a href="#/technologie">La technologie</a>
+        <a href="#/gammes">Gammes</a>
+        <a href="#/resultats">Résultats mesurés</a>
+        <a href="#/distributeurs">Distributeurs</a>
+        <a href="#/contact">Contact</a>
+      </nav>
+    </div>
+    <div class="foot-note">
+      <span>Aqua Equilibrium · technologies Ring Orion · propriété intellectuelle déposée à l&rsquo;INPI</span>
+      <span>FR · EN (à venir) · ES (à venir)</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ══════ DONNÉES DISTRIBUTEURS — À REMPLACER PAR LES DONNÉES RÉELLES ══════
+   Chaque entrée : id (unique), nom, ville, region, pays, x/y = position sur la carte.
+   Les positions x/y des villes ci-dessous sont déjà projetées ; pour une
+   nouvelle ville, demander au développeur de projeter lat/lon.            */
+const DISTRIBUTEURS = [
+  {id:"tenerife",  nom:"Canarias Agua Equilibrio",    ville:"Santa Cruz de Tenerife", court:"Tenerife", region:"Îles Canaries", pays:"Espagne", x:{{PT_TENERIFE}}, inset:true},
+  {id:"paris",     nom:"Hydro Réseaux Île-de-France", ville:"Paris",     region:"Île-de-France",        pays:"France",  x:{{PT_PARIS}}},
+  {id:"nantes",    nom:"Atlantique Fluides",          ville:"Nantes",    region:"Pays de la Loire",     pays:"France",  x:{{PT_NANTES}}},
+  {id:"bordeaux",  nom:"Sud-Ouest Eau Conseil",       ville:"Bordeaux",  region:"Nouvelle-Aquitaine",   pays:"France",  x:{{PT_BORDEAUX}}},
+  {id:"lyon",      nom:"Aquatech Rhône",              ville:"Lyon",      region:"Auvergne-Rhône-Alpes", pays:"France",  x:{{PT_LYON}}},
+  {id:"marseille", nom:"Provence Traitement d'Eau",   ville:"Marseille", region:"Provence-Alpes-Côte d'Azur", pays:"France", x:{{PT_MARSEILLE}}},
+];
+const INSET_OFFSET = {x:{{INSET_TX}}, y:{{INSET_TY}}};
+
+/* ══════ ROUTER ══════ */
+const views = document.querySelectorAll("main [data-view]");
+function currentRoute(){
+  const h = location.hash.replace(/^#\/?/, "").split("?")[0];
+  return document.querySelector(`main [data-view="${h}"]`) ? h : "accueil";
+}
+function route(){
+  const r = currentRoute();
+  views.forEach(v => v.classList.toggle("active", v.dataset.view === r));
+  document.querySelectorAll("[data-nav]").forEach(a =>
+    a.classList.toggle("current", a.dataset.nav === r));
+  window.scrollTo(0, 0);
+  document.getElementById("mmenu").classList.remove("open");
+  document.getElementById("burger").setAttribute("aria-expanded", "false");
+  requestAnimationFrame(observeReveals);
+}
+window.addEventListener("hashchange", route);
+
+/* ══════ REVEALS ══════ */
+const io = ("IntersectionObserver" in window) ? new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+}, {threshold: 0.12}) : null;
+function observeReveals(){
+  document.querySelectorAll("main [data-view].active .rv:not(.in)").forEach(el => {
+    if (io) io.observe(el); else el.classList.add("in");
+  });
+}
+
+/* ══════ BURGER ══════ */
+document.getElementById("burger").addEventListener("click", () => {
+  const m = document.getElementById("mmenu");
+  const open = m.classList.toggle("open");
+  document.getElementById("burger").setAttribute("aria-expanded", String(open));
+});
+
+/* ══════ CARTE + LISTE DISTRIBUTEURS ══════ */
+const gPoints = document.getElementById("map-points");
+const listEl = document.getElementById("dist-list");
+const emptyEl = document.getElementById("dist-empty");
+const NS = "http://www.w3.org/2000/svg";
+
+DISTRIBUTEURS.forEach(d => {
+  let [px, py] = d.x;
+  if (d.inset) { px += INSET_OFFSET.x; py += INSET_OFFSET.y; }
+  const g = document.createElementNS(NS, "g");
+  g.setAttribute("class", "dpt");
+  g.dataset.id = d.id;
+  const halo = document.createElementNS(NS, "circle");
+  halo.setAttribute("class", "halo");
+  halo.setAttribute("cx", px); halo.setAttribute("cy", py); halo.setAttribute("r", 7);
+  halo.style.transformOrigin = px + "px " + py + "px";
+  const core = document.createElementNS(NS, "circle");
+  core.setAttribute("class", "core");
+  core.setAttribute("cx", px); core.setAttribute("cy", py); core.setAttribute("r", 5);
+  const label = document.createElementNS(NS, "text");
+  label.setAttribute("x", px + 10); label.setAttribute("y", py + 4);
+  label.textContent = d.court || d.ville;
+  g.append(halo, core, label);
+  g.addEventListener("mouseenter", () => hot(d.id, true));
+  g.addEventListener("mouseleave", () => hot(d.id, false));
+  g.addEventListener("click", () => {
+    const card = listEl.querySelector(`[data-id="${d.id}"]`);
+    if (card) card.scrollIntoView({block: "nearest", behavior: "smooth"});
+    hot(d.id, true); setTimeout(() => hot(d.id, false), 1600);
+  });
+  gPoints.appendChild(g);
+
+  const card = document.createElement("div");
+  card.className = "dist-card"; card.dataset.id = d.id; card.tabIndex = 0;
+  card.innerHTML = `<span class="z">${d.pays} · ${d.region}</span><b>${d.nom}</b><span>${d.ville}</span>`;
+  card.addEventListener("mouseenter", () => hot(d.id, true));
+  card.addEventListener("mouseleave", () => hot(d.id, false));
+  card.addEventListener("focus", () => hot(d.id, true));
+  card.addEventListener("blur", () => hot(d.id, false));
+  listEl.appendChild(card);
+});
+
+function hot(id, on){
+  document.querySelectorAll(`.dpt[data-id="${id}"], .dist-card[data-id="${id}"]`)
+    .forEach(el => el.classList.toggle("hot", on));
+}
+
+document.getElementById("dist-search").addEventListener("input", e => {
+  const q = e.target.value.trim().toLowerCase();
+  let visible = 0;
+  DISTRIBUTEURS.forEach(d => {
+    const hay = `${d.nom} ${d.ville} ${d.region} ${d.pays}`.toLowerCase();
+    const match = !q || hay.includes(q);
+    const card = listEl.querySelector(`[data-id="${d.id}"]`);
+    const pt = gPoints.querySelector(`[data-id="${d.id}"]`);
+    if (card) card.style.display = match ? "" : "none";
+    if (pt) pt.classList.toggle("dim", !match);
+    if (match) visible++;
+  });
+  emptyEl.style.display = visible ? "none" : "block";
+});
+
+/* ══════ FORMULAIRE → MAILTO ══════ */
+document.getElementById("contact-form").addEventListener("submit", e => {
+  e.preventDefault();
+  const f = e.target;
+  const subject = encodeURIComponent(`[Site Ring Orion] ${f.profil.value} — ${f.nom.value}`);
+  const body = encodeURIComponent(
+    `Nom : ${f.nom.value}\nSociété : ${f.societe.value || "—"}\nEmail : ${f.email.value}\nProfil : ${f.profil.value}\n\n${f.message.value}`
+  );
+  window.location.href = `mailto:contact@aqua-equilibrium.com?subject=${subject}&body=${body}`;
+});
+
+/* init */
+route();
+</script>
+
+</body>
+</html>
