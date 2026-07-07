@@ -6,11 +6,12 @@ ROOT = pathlib.Path(__file__).parent
 OUT = pathlib.Path("/Users/stce/Proyectos/Le-RING/Codigo/web/index.html")
 
 tpl = (ROOT / "site_template.html").read_text()
-tpl = tpl.replace("{{FONTS_CSS}}", (ROOT / "fonts/embedded.css").read_text())
+tpl = tpl.replace("{{FONTS_CSS}}", (ROOT / "fonts/embedded_v2.css").read_text())
 
 for ph, path in [("IMG_LOGO", "assets/f_logo.jpg"), ("IMG_TUYAUX", "assets/f_tuyaux.jpg"),
                  ("IMG_POSE", "assets/f_pose.jpg"), ("IMG_EQ", "assets/f_equilibrium.jpg"),
-                 ("IMG_DISSO", "assets/f_dissolvium.jpg"), ("IMG_DN150", "assets/f_dn150.jpg")]:
+                 ("IMG_DISSO", "assets/f_dissolvium.jpg"), ("IMG_DN150", "assets/f_dn150.jpg"),
+                 ("IMG_VIDEO_POSTER", "assets/f_video_poster.jpg")]:
     b64 = base64.b64encode((ROOT / path).read_bytes()).decode()
     tpl = tpl.replace("{{" + ph + "}}", "data:image/jpeg;base64," + b64)
 
